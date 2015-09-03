@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane fx:id="mainView" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ru.matritca.energymeterclient.fxmlcontrollers.FXMLMainController">
+   <children>
+      <BorderPane fx:id="borderPane" prefHeight="400.0" prefWidth="600.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <top>
+            <VBox prefHeight="74.0" prefWidth="600.0" BorderPane.alignment="CENTER">
+               <children>
+                  <MenuBar>
+                    <menus>
+                      <Menu mnemonicParsing="false" text="File">
+                        <items>
+                          <MenuItem fx:id="closeMenuItem" mnemonicParsing="false" onAction="#handleCloseItem" text="Close" />
+                        </items>
+                      </Menu>
+                      <Menu mnemonicParsing="false" text="Config">
+                        <items>
+                          <MenuItem fx:id="comPortsConfig" mnemonicParsing="false" onAction="#handleComPortsConfig" text="Com Ports" />
+                              <MenuItem fx:id="comPortsSettings" mnemonicParsing="false" onAction="#handleComPortsSettings" text="Com Ports Settings" />
+                        </items>
+                      </Menu>
+                        <Menu mnemonicParsing="false" text="View">
+                          <items>
+                            <MenuItem mnemonicParsing="false" text="Logs" />
+                              <MenuItem mnemonicParsing="false" text="Meter client" />
+                          </items>
+                        </Menu>
+                        <Menu mnemonicParsing="false" text="Web">
+                          <items>
+                              <MenuItem mnemonicParsing="false" text="WebSocket" />
+                              <MenuItem mnemonicParsing="false" text="Web Service" />
+                          </items>
+                        </Menu>
+                    </menus>
+                  </MenuBar>
+                  <ToolBar prefHeight="40.0" prefWidth="200.0">
+                     <items>
+                        <Label text="Port:" />
+                        <ComboBox fx:id="comPortNameCombo" prefWidth="150.0" />
+                        <Button fx:id="openPortBtn" mnemonicParsing="false" onAction="#handleOpenPortBtn" text="Open" />
+                        <Button fx:id="refreshComPorts" mnemonicParsing="false" onAction="#handleRefreshComPorts" text="Refresh" />
+                        <Label fx:id="infoLabel" />
+                     </items>
+                  </ToolBar>
+               </children>
+            </VBox>
+         </top>
+         <center>
+            <!--<TabPane fx:id="mainTabPain" tabClosingPolicy="UNAVAILABLE" BorderPane.alignment="CENTER">-->
+               <!--<tabs>-->
+
+               <!--</tabs>-->
+            <!--</TabPane>-->
+         </center>
+         <bottom>
+            <VBox prefHeight="53.0" prefWidth="594.0" BorderPane.alignment="CENTER">
+               <children>
+                  <ToolBar prefHeight="0.0" prefWidth="600.0">
+                    <items>
+                      <Button mnemonicParsing="false" text="Button" />
+                    </items>
+                  </ToolBar>
+               </children>
+            </VBox>
+         </bottom>
+      </BorderPane>
+   </children>
+</AnchorPane>
