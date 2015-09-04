@@ -4,7 +4,10 @@ package ru.matritca.energymeterclient.domain;
  * Created by Vasiliy on 18.06.2015.
  */
 
+import javafx.beans.property.ReadOnlyBooleanWrapper;
+import javafx.beans.property.SimpleBooleanProperty;
 import jssc.SerialPort;
+import jssc.SerialPortException;
 import ru.matritca.energymeterclient.serialportproperties.Baudrate;
 import ru.matritca.energymeterclient.serialportproperties.Databits;
 import ru.matritca.energymeterclient.serialportproperties.Parity;
@@ -19,7 +22,19 @@ public class SerialPortObject {
     private Stopbits stopbits;
     private Parity parity;
     private SerialPort serialPort;
-    private boolean isOpened;
+    private SimpleBooleanProperty isOpened = new SimpleBooleanProperty(false);
+
+    public SimpleBooleanProperty isOpenedProperty(){
+        return isOpened;
+    }
+
+    public boolean issOpened(){
+       return isOpened.get();
+    }
+
+    public void setIsOpened(boolean isOpen){
+        isOpened.set(isOpen);
+    }
 
     public SerialPortObject(String portname) {
         this.portname = portname;
@@ -28,6 +43,7 @@ public class SerialPortObject {
         databits = Databits.DATABITS_8;
         stopbits = Stopbits.STOPBITS_1;
         parity = Parity.PARITY_NONE;
+
     }
 
     public SerialPortObject(SerialPort serialPort) {
@@ -90,6 +106,7 @@ public class SerialPortObject {
         return serialPort.isOpened();
     }
 
+
     public String getPortname() {
         return portname;
     }
@@ -97,6 +114,7 @@ public class SerialPortObject {
     public void setPortname(String portname) {
         this.portname = portname;
     }
+
 
     @Override
     public boolean equals(Object o) {

@@ -9,6 +9,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import ru.matritca.energymeterclient.fxmlcontrollers.FXMLComPortConfigController;
 import ru.matritca.energymeterclient.fxmlcontrollers.FXMLMainController;
 
 import java.io.IOException;
@@ -29,6 +30,13 @@ public class FXMLControllersConfig {
         System.out.println("Load controller");
          return (FXMLMainController) loadController("/fxml/FXMLMainSchema.fxml");
 
+    }
+
+    @Bean
+    @Qualifier(value = "fxmlComPortConfig")
+    public FXMLComPortConfigController fxmlComPortConfigController() throws IOException {
+        System.out.println("Load controller");
+        return (FXMLComPortConfigController) loadController("/fxml/FXMLComPortConfigSchema.fxml");
     }
 
     protected Object loadController(String url) throws IOException {
