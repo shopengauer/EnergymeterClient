@@ -92,35 +92,25 @@ public class FXMLComPortConfigController implements Initializable,ApplicationEve
 
 
         Baudrate newBaudrate = Baudrate.getBaudrateByLabel(baudRateCombo.getValue());
-        System.out.println(newBaudrate.getLabel());
         Databits newDatabits = Databits.getDatabitsByLabel(dataBitsCombo.getValue());
         Stopbits newStopbits = Stopbits.getStopbitsByLabel(stopBitsCombo.getValue());
         Parity newParity = Parity.getParityByLabel(parityCombo.getValue());
 
-        //SerialPortObject newSerialPortObject =  new SerialPortObject(new SerialPort(selectedComPort),newBaudrate,newDatabits,newStopbits,newParity);
         try {
-             // можно устанавливать только если компорт открыт
-            sendSerialPortObject.getSerialPort().setParams(newBaudrate.getIntValue(), newDatabits.getIntValue(), newStopbits.getIntValue(), newParity.getIntValue());
             sendSerialPortObject.setBaudRate(newBaudrate);
             sendSerialPortObject.setDatabits(newDatabits);
             sendSerialPortObject.setStopbits(newStopbits);
             sendSerialPortObject.setParity(newParity);
-
+            sendSerialPortObject.setParams();// можно устанавливать только если компорт открыт
 
         }catch (SerialPortException e){
-            System.out.println(e.getExceptionType());
-            // если компорт закрыт
-            sendSerialPortObject.setBaudRate(newBaudrate);
-            sendSerialPortObject.setDatabits(newDatabits);
-            sendSerialPortObject.setStopbits(newStopbits);
-            sendSerialPortObject.setParity(newParity);
-
+           // System.out.println(e.getExceptionType());
+           // infoPortLabel.setText(e.getExceptionType());
         }
+
         observableComPortMapProps.replace(selectedComPort, sendSerialPortObject);
-
-
-       // System.out.println((String) comPortLabel.getProperties().get("com"));
-        // comPortLabel.setText((String) comPortLabel.getProperties().get("com"));
+        Stage stage = (Stage)view.getScene().getWindow();
+        stage.close();
     }
 
     @Override

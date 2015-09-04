@@ -5,7 +5,7 @@ package ru.matritca.energymeterclient.serialportproperties;
  */
 public enum Parity {
 
-    PARITY_NONE(0,"None"),PARITY_ODD(1,"Even"),
+    PARITY_NONE(0,"None"),PARITY_ODD(1,"Odd"),
     PARITY_EVEN(2,"Even"),PARITY_MARK(3,"Mark"),PARITY_SPACE(4,"Space");
 
     private int intValue;
