@@ -31,6 +31,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.ApplicationEventPublisherAware;
 import ru.matritca.energymeterclient.domain.SerialPortObject;
+import ru.matritca.energymeterclient.serialportproperties.SerialPortObjectContainer;
 
 import javax.annotation.PostConstruct;
 import java.net.URL;
@@ -51,6 +52,8 @@ public class FXMLMainController implements Initializable,ApplicationEventPublish
     private AnchorPane mainView;
 
 
+
+
     @FXML
     private BorderPane borderPane;
 
@@ -65,7 +68,9 @@ public class FXMLMainController implements Initializable,ApplicationEventPublish
      *  обьект Map для хранения свойств ком портов SerialPortObject
      *  ключ - String "Имя ком порта" значение - SerialPortObject
      */
+
     private ObservableMap<Object,Object> observableComPortMapProps; //
+
 
     /**
      * объект для хранения текущего списка ком портов полученного с ПК
@@ -113,6 +118,11 @@ public class FXMLMainController implements Initializable,ApplicationEventPublish
     @Autowired
     private FXMLComPortConfigController fxmlComPortConfigController;
 
+    @Autowired
+    private FXMLTabPaneController fxmlTabPaneController;
+
+    @Autowired
+    private SerialPortObjectContainer serialPortObjectContainer;
 
     @Override
     public void setApplicationEventPublisher(ApplicationEventPublisher applicationEventPublisher) {
@@ -138,7 +148,13 @@ public class FXMLMainController implements Initializable,ApplicationEventPublish
             System.out.println("-----------------------");
         }
 
+//        circleOpenPortInfo.fillProperty().;
+//        comPortNameCombo.getSelectionModel().getSelectedItem().
+
         observableComPortMapProps = comPortNameCombo.getProperties(); // Получаем Map контейнер для хранения свойств всех ком портов
+
+        serialPortObjectContainer.setObservableComPortMapProps(observableComPortMapProps);
+
         comPortSet = FXCollections.observableSet(SerialPortList.getPortNames());// Получаем Set список имен всех доступных ком портов
 
         // помещаем все имена ком портов в наш контейнер
@@ -198,7 +214,8 @@ public class FXMLMainController implements Initializable,ApplicationEventPublish
             }
         });
 
-
+        // добавление tabpane будет осуществляться при открытии com port
+        borderPane.setCenter(fxmlTabPaneController.getViewTabPane());
 //
 
 //        infoLabel.textProperty().bindBidirectional(comPortNameCombo.valueProperty(), new SerialPortObjectStringConverter());

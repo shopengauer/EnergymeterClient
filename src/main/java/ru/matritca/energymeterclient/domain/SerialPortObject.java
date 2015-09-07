@@ -8,6 +8,7 @@ import javafx.beans.property.ReadOnlyBooleanProperty;
 import javafx.beans.property.ReadOnlyBooleanWrapper;
 import javafx.beans.property.SimpleBooleanProperty;
 import jssc.SerialPort;
+import jssc.SerialPortEventListener;
 import jssc.SerialPortException;
 import ru.matritca.energymeterclient.serialportproperties.Baudrate;
 import ru.matritca.energymeterclient.serialportproperties.Databits;
@@ -70,7 +71,13 @@ public class SerialPortObject {
         return isOpenPort.getReadOnlyProperty();
     }
 
+    public void addEventListener(SerialPortEventListener eventListener) throws SerialPortException {
+        serialPort.addEventListener(eventListener);
+    }
 
+    public void addEventListener(SerialPortEventListener eventListener,int mask) throws SerialPortException {
+        serialPort.addEventListener(eventListener,mask);
+    }
 
 
     @Override

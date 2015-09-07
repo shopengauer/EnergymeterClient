@@ -11,6 +11,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import ru.matritca.energymeterclient.fxmlcontrollers.FXMLComPortConfigController;
 import ru.matritca.energymeterclient.fxmlcontrollers.FXMLMainController;
+import ru.matritca.energymeterclient.fxmlcontrollers.FXMLTabPaneController;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -33,6 +34,13 @@ public class FXMLControllersConfig {
     }
 
     @Bean
+    @Qualifier(value = "fxmlTabPane")
+    public FXMLTabPaneController fxmlTabPaneController() throws IOException {
+        return (FXMLTabPaneController) loadController("/fxml/FXMLTabPaneSchema.fxml");
+
+    }
+
+    @Bean
     @Qualifier(value = "fxmlComPortConfig")
     public FXMLComPortConfigController fxmlComPortConfigController() throws IOException {
         System.out.println("Load controller");
@@ -48,10 +56,10 @@ public class FXMLControllersConfig {
         }
     }
 
-    @Bean
-    public ObservableMap<Object,Object> observableComPortMapProps(){
-        return FXCollections.observableMap(new HashMap<Object, Object>());
-    }
+//    @Bean
+//    public ObservableMap<Object,Object> observableComPortMapProps(){
+//        return FXCollections.observableMap(new HashMap<Object, Object>());
+//    }
 
 
 }
