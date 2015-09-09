@@ -3,6 +3,7 @@ package ru.matritca.energymeterclient;
 
 import javafx.application.Application;
 import javafx.stage.Stage;
+import jdk.nashorn.internal.ir.annotations.Ignore;
 import jssc.*;
 import org.junit.Assert;
 import org.junit.BeforeClass;
@@ -11,11 +12,16 @@ import org.junit.runner.RunWith;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.test.annotation.Repeat;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import ru.matritca.energymeterclient.domain.SerialPortObject;
+import ru.matritca.energymeterclient.energymeterprotocol.EmeterRegisters;
+import ru.matritca.energymeterclient.energymeterprotocol.FlashRegistersMapForCommand0X01;
+import ru.matritca.energymeterclient.registers.Register;
 import ru.matritca.energymeterclient.serialportproperties.SerialPortObjectContainer;
+import ru.matritca.energymeterclient.springconfigs.RegistersConfig;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(classes = EnergyMeterClientApplication.class)
@@ -26,6 +32,9 @@ public class EnergyMeterClientApplicationTests {
 	private Logger logger = LoggerFactory.getLogger(EnergyMeterClientApplicationTests.class);
     private SerialPortObject testSerialPortObject;
     private StringBuilder stringBuilder = new StringBuilder(300);
+
+
+
 
 	@Autowired
 	private SerialPortObjectContainer serialPortObjectContainer;
@@ -39,6 +48,14 @@ public class EnergyMeterClientApplicationTests {
 			"rtnbcv344143t45fbdsfb" +
 			"4h4nbdfbdfbaasdfbdfbdfbbndant" +
 			"fghjkcvnxb djf df  d 28364829ydbbsbodbcjskdbhou3ygr34uvjvsdclasjcl3vul2v3fwjfvhhlwv";
+
+	 @Autowired
+	 private Register configRegister;
+
+
+	@Autowired
+	private Register indicationConfigRegister;
+
 
 	public static class AsNonApp extends Application {
 
@@ -72,6 +89,7 @@ public class EnergyMeterClientApplicationTests {
 
 	@Test
 	@Repeat(value = 1)
+	@Ignore
 	public void contextLoads() throws InterruptedException {
 
 		serialPortEventListener = new SerialPortEventListener(){
@@ -129,7 +147,7 @@ public class EnergyMeterClientApplicationTests {
 
 		try {
 			testSerialPortObject.getSerialPort().writeString(testString2);
-
+	//		testSerialPortObject.getSerialPort().
 
 		} catch (SerialPortException e) {
 			logger.error(e.getExceptionType());
@@ -148,4 +166,70 @@ public class EnergyMeterClientApplicationTests {
 
 	}
 
+
+	@Test
+	public void testName() throws Exception {
+
+//		for (Integer o : configRegister.getRegisterByteArray()) {
+//			System.out.println(o);
+//		}
+//
+//		configRegister.setBit("Button");
+//		configRegister.setBit("EP1");
+//		configRegister.setBit("EP2");
+//		configRegister.setBit("Lightening");
+//
+//		for (Integer o : configRegister.getRegisterByteArray()) {
+//			System.out.println(o);
+//		}
+//
+//
+//
+//		configRegister.setSubRegisterValue(0x00, 0);
+//		for (Integer o : configRegister.getRegisterByteArray()) {
+//			System.out.println(o);
+//		}
+
+		indicationConfigRegister.setBit("EnergyIndication_LSB");
+
+//		for (Integer o : indicationConfigRegister.getRegisterByteArray()) {
+//			System.out.println(o);
+//		}
+
+		System.out.println(indicationConfigRegister.readBit("EnergyIndication_LSB"));
+		indicationConfigRegister.clearBit("EnergyIndication_LSB");
+		System.out.println(indicationConfigRegister.readBit("EnergyIndication_LSB"));
+
+
+
+//		Register register = new Register(EmeterRegisters.CONFIG_REGISTER,5,0xf0);
+//
+//		register.addRegisterBit("Button",0,2);
+//		register.addRegisterBit("EP1", 1, 3);
+//
+//		register.getRegitersBitMap();
+//		for (String s : register.getRegitersBitMap()) {
+//			System.out.println(s);
+//		}
+//        register.setBit("Button");
+//         register.setBit("EP1");
+//
+//		for (Integer o : register.getRegisterByteArray()) {
+//			//System.out.println(Byte.toUnsignedInt(o));
+//			System.out.println(o);
+//		}
+//
+//		//register.clearBit("Button");
+//		register.clearBit("EP1");
+//
+//		for (Integer o : register.getRegisterByteArray()) {
+//			//System.out.println(Byte.toUnsignedInt(o));
+//			System.out.println(o);
+//		}
+//
+//
+//
+//		System.out.println(register.getRegisterName());
+
+	}
 }

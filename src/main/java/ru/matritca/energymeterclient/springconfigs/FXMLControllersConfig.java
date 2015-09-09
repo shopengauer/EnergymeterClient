@@ -9,9 +9,11 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import ru.matritca.energymeterclient.energymeterprotocol.EmeterRegisters;
 import ru.matritca.energymeterclient.fxmlcontrollers.FXMLComPortConfigController;
 import ru.matritca.energymeterclient.fxmlcontrollers.FXMLMainController;
 import ru.matritca.energymeterclient.fxmlcontrollers.FXMLTabPaneController;
+import ru.matritca.energymeterclient.registers.Register;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -24,6 +26,7 @@ import java.util.HashMap;
 public class FXMLControllersConfig {
 
     private Logger logger = LoggerFactory.getLogger(FXMLMainController.class);
+
 
     @Bean
     @Qualifier(value = "fxmlMain")
