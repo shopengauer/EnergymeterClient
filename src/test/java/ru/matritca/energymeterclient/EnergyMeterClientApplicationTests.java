@@ -190,22 +190,21 @@ public class EnergyMeterClientApplicationTests {
 //			System.out.println(o);
 //		}
 
-		indicationConfigRegister.setBit("EnergyIndication_LSB");
+		indicationConfigRegister.setBit("EnergyIndication$LSb");
 
 //		for (Integer o : indicationConfigRegister.getRegisterByteArray()) {
 //			System.out.println(o);
 //		}
 
-		System.out.println(indicationConfigRegister.readBit("EnergyIndication_LSB"));
-		indicationConfigRegister.clearBit("EnergyIndication_LSB");
-		System.out.println(indicationConfigRegister.readBit("EnergyIndication_LSB"));
+		System.out.println(indicationConfigRegister.readBit("EnergyIndication$LSb"));
+		indicationConfigRegister.clearBit("EnergyIndication$LSb");
+		System.out.println(indicationConfigRegister.readBit("EnergyIndication$LSb"));
 
 
 
 //		Register register = new Register(EmeterRegisters.CONFIG_REGISTER,5,0xf0);
 //
-//		register.addRegisterBit("Button",0,2);
-//		register.addRegisterBit("EP1", 1, 3);
+//
 //
 //		register.getRegitersBitMap();
 //		for (String s : register.getRegitersBitMap()) {

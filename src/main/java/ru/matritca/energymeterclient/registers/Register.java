@@ -1,55 +1,92 @@
 package ru.matritca.energymeterclient.registers;
 
-import javafx.beans.property.SimpleMapProperty;
-import javafx.collections.ObservableMap;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import ru.matritca.energymeterclient.energymeterprotocol.EmeterRegisters;
-import ru.matritca.energymeterclient.energymeterprotocol.FlashRegistersMapForCommand0X01;
 
 import java.util.*;
 
 /**
  * Created by Vasiliy on 08.09.2015.
  */
-public class Register {
+public class Register{
 
     private Logger logger = LoggerFactory.getLogger(Register.class);
 
-    private String registerName;
-    private int numOfBytes;
+    private String registerName;    // имя регистра
+    private int registerLength;      // количество байт в регистре
+    /**
+     * Массив подрегистров в регистре
+     * ArrayList of all bytes of current register
+     */
+    private List<Integer> registerArray;
 
-    List<Integer> registerArray;
-    Map<String,Integer[]> bitMap; //Integer[] - координаты бита: нулевой элемент - порядковый номер байта
-                                   //     первый элемент  - порядковый номер бита в байте
+    /**
+     * Таблица для предопределения имен бит и их позиций в регистре;
+     *      String: name of the bit ;
+     *      Integer[]:  Integer[0] - byte position,
+     *                  Integer[1] - bit position in byte
+     */
+    private Map<String,Integer[]> bitMap;
 
-    Map<Integer,Map<Integer,String>> valueInfo;
+    /**
+     * Таблица соответствия имени подрегистра(String) и его позиции в регистре(Integer)
+     */
+    private Map<String,Integer> byteMap;
 
-    //     первый элемент  - порядковый номер бита в байте
-    public Register(EmeterRegisters register,int numOfBytes,int registerInitialValue) {
-        this.registerName = register.name();
-        this.numOfBytes = numOfBytes;
+    /**
+     * Таблица для предопределения имен значений, записываемых в подрегистры.
+     * String - идентификатор значения;
+     * Integer - значение
+     */
+    private Map<String,Integer> predefineValueMap;
+
+
+
+    public Register(EmeterRegisters register) {
+        this.registerName = register.name(); // set register name
+        this.registerLength = register.getRegisterLength(); // register length
+        this.registerArray = new ArrayList<>();  // create ArrayList of register bytes
+        this.byteMap = new HashMap<>();
         this.bitMap = new HashMap<>();
-        this.registerArray = new ArrayList<>();
-        for(int i = 0; i < numOfBytes; i++ ) {
-           registerArray.add(i,registerInitialValue);
+        this.predefineValueMap = new HashMap<>();
+
+        for(int i = 0; i < registerLength; i++ ) {
+            registerArray.add(i,0x00);
+        }
+
+    }
+
+    public Register(EmeterRegisters register,List<Integer> registerInitialValue) {
+        this.registerName = register.name(); // set register name
+        this.registerLength = register.getRegisterLength(); // register length
+        this.registerArray = new ArrayList<>();  // create ArrayList of register bytes
+        this.byteMap = new HashMap<>();
+        this.bitMap = new HashMap<>();
+        this.predefineValueMap = new HashMap<>();
+
+        for(int i = 0; i < registerLength; i++ ) {
+           registerArray.add(i,registerInitialValue.get(i));
         }
      }
 
-     public Integer[] getRegisterByteArray(){
-       Integer[] byteArray = null;
-       byteArray = registerArray.toArray(new Integer[]{});
-       return byteArray;
+
+
+
+     public void defineRegisterBit(String bitName, int bytePosition, int bitPositionInByte){
+          bitMap.put(bitName, new Integer[]{bytePosition, bitPositionInByte});
+     }
+
+     public void defineRegisterBit(String bitName, int bitPositionInRegister){// todo
+
      }
 
 
-     public void addRegisterBit(String bitName,int bytePosition,int bitPosition){
-          bitMap.put(bitName,new Integer[]{bytePosition,bitPosition});
+     public void defineRegisterByteValue(String valueDesc, int value){
+          predefineValueMap.put(valueDesc, value);
      }
 
-     public Set<String> getRegitersBitMap(){
-         return  bitMap.keySet();
-     }
+
 
 
     public int readBit(String bitName){
@@ -104,7 +141,7 @@ public class Register {
 
     }
 
-    public void setSubRegisterValue(int value,int bytePosition){
+    public void setByteRegisterValue(int value,int bytePosition){
         ListIterator<Integer> iterator = registerArray.listIterator();
 
         while(iterator.hasNext()){
@@ -119,6 +156,21 @@ public class Register {
         }
 
     }
+  public void setByteRegisterPredefinedValue(String valueDesc, int bytePosition){
+        ListIterator<Integer> iterator = registerArray.listIterator();
+
+        while(iterator.hasNext()){
+            logger.info("Current register byte: {}", iterator.nextIndex());
+            if (iterator.nextIndex() == bytePosition) {
+                iterator.next();
+                iterator.set(predefineValueMap.get(valueDesc)); // меняем регистр на обновленный
+            }else{
+                iterator.next();
+            }
+        }
+    }
+
+
 
    public void addRegisterValueInfo(){
 
@@ -132,4 +184,15 @@ public class Register {
     public int getRegisterSize(){
        return registerArray.size();
     }
+
+    public Set<String> getRegitersBitMap(){
+        return  bitMap.keySet();
+    }
+
+    public Integer[] getRegisterByteArray(){
+        Integer[] byteArray = null;
+        byteArray = registerArray.toArray(new Integer[]{});
+        return byteArray;
+    }
+
 }

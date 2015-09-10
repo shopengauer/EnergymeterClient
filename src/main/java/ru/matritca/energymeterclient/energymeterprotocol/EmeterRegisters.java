@@ -65,13 +65,20 @@ public enum EmeterRegisters {
 
 
     private byte address;
-    private int responseLength;
+    private int registerLength;
     private String description;
 
-    EmeterRegisters(byte address, int responseLength, String description) {
+    EmeterRegisters(byte address, int registerLength, String description) {
         this.address = address;
-        this.responseLength = responseLength;
+        this.registerLength = registerLength;
         this.description = description;
     }
 
+    public byte getAddress() {
+        return address;
+    }
+
+    public int getRegisterLength() {
+        return registerLength;
+    }
 }
